@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>計時器遞增</title>
+  <style>
+    dialog {
+      width: 300px;
+      padding: 20px;
+      border: none;
+    }
+    progress {
+      width: 100%;
+      margin-top: 10px;
+    }
+    label {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<button id="loadButton">Load</button>
+
+<dialog id="timerDialog">
+  <label for="progress">進度:</label>
+  <progress id="progress" max="100" value="0"></progress>
+  <br>
+  <label id="progressValue">0</label>
+</dialog>
+
+<script>
+  let isTimerRunning = false; // 監控計時器是否正在運行
+
+  document.getElementById('loadButton').addEventListener('click', function() {
+    if (isTimerRunning) return; // 如果計時器正在運行，則不新增計時器
+
+    isTimerRunning = true;
+    const dialog = document.getElementById('timerDialog');
+    const progress = document.getElementById('progress');
+    const progressValue = document.getElementById('progressValue');
+
+    dialog.showModal(); // 顯示對話框
+
+    let value = 0;
+
+    const timer = setInterval(function() {
+      value++;
+      progress.value = value;
+      progressValue.textContent = value;
+
+      if (value >= 100) {
+        clearInterval(timer);
+        isTimerRunning = false; // 計時器結束後，標記計時器停止
+        dialog.close(); // 關閉對話框
+      }
+    }, 10); // 每10毫秒遞增
+  });
+</script>
+
+</body>
+</html>
